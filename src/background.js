@@ -2,8 +2,23 @@
 
 import { app, protocol, BrowserWindow } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
-import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
+import { createTray } from "@/utils/backgroundExtra";
+// import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
+
+let win;
+
+// 获取单例锁，当打开的第二个应用运行此函数时，second-instance
+// 事件将会在首个应用中触发，从而导致重新定位，而不是打开两个实例。
+if (app.requestSingleInstanceLock()) {
+  app.on("second-instance", (event, commandLine, workingDirectory) => {
+    if (win) {
+      setPosition();
+    }
+  });
+} else {
+  app.quit();
+}
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -12,9 +27,16 @@ protocol.registerSchemesAsPrivileged([
 
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+  win = new BrowserWindow({
+    width: 1080,
+    height: 720,
+    minWidth: 720,
+    minHeight: 540,
+    frame: false,
+    title: "目标检测与跟踪上位机",
+    // transparent: true,
+    useContentSize: true,
+    flashFrame: true,
     webPreferences: {
       // Required for Spectron testing
       enableRemoteModule: !!process.env.IS_TEST,
@@ -23,8 +45,11 @@ async function createWindow() {
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      enableRemoteModule: true,
     },
   });
+
+  setPosition();
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -56,16 +81,23 @@ app.on("activate", () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
-  if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-    try {
-      await installExtension(VUEJS_DEVTOOLS);
-    } catch (e) {
-      console.error("Vue Devtools failed to install:", e.toString());
-    }
-  }
-  createWindow();
+  // 阻止Devtools可以加快编译速度
+  // if (isDevelopment && !process.env.IS_TEST) {
+  //   // Install Vue Devtools
+  //   try {
+  //     await installExtension(VUEJS_DEVTOOLS);
+  //   } catch (e) {
+  //     console.error("Vue Devtools failed to install:", e.toString());
+  //   }
+  // }
+  initApplication();
 });
+
+function initApplication() {
+  createWindow();
+
+  createTray(setPosition);
+}
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
@@ -80,4 +112,9 @@ if (isDevelopment) {
       app.quit();
     });
   }
+}
+
+// 设置窗口定位
+function setPosition() {
+  win.setPosition(60, 60);
 }

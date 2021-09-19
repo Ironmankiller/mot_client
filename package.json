@@ -1,5 +1,5 @@
 {
-  "name": "mot_client",
+  "name": "HMI",
   "version": "0.1.0",
   "private": true,
   "description": "A HMI for detection and tracking",
@@ -17,6 +17,9 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.6.5",
+    "fs-extra": "^9.0.1",
+    "lodash-id": "^0.14.1",
+    "lowdb": "^1.0.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
