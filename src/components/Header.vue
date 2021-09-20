@@ -1,8 +1,6 @@
 <template>
   <div class="header">
-    <div id="left-icon">
-      <div class="iconfont icon-genzong"></div>
-    </div>
+    <div id="left-icon" class="iconfont icon-genzong" @click="iconBoom"></div>
     <div id="center-text">{{ appName }}</div>
     <div id="right-icon">
       <div class="iconfont icon-zuixiaohua" @click="minimizeWin"></div>
@@ -14,9 +12,10 @@
 <script>
 import { ipcRenderer} from 'electron';
 import "element-ui"
+import CursorSpecialEffects from "@/utils/fireworks"
 
 export default {
-  name: 'header',
+  name: 'my-header',
   data() {
       return {
           appName: "HMI for Object Detection and Tracking"
@@ -32,7 +31,10 @@ export default {
     },
     closeWin(){
       ipcRenderer.send('window-close')
-    }
+    },
+    iconBoom(event) {
+      CursorSpecialEffects.handleMouseDown(event);
+    },
   }
 }
 </script>
@@ -48,26 +50,21 @@ export default {
     font-size: 15px;
     background-color: #F2F2F2;
     box-shadow: 0px 5px 5px -5px rgba(0,0,0,.5);
-    #left-icon {
-      div {
-        font-size: 26px;
-        color: #424242;
-      }
-      
-    }
-    #center-text {
+    div {
       color: #424242;
+    }
+
+    #left-icon {
+      font-size: 26px;
+      -webkit-app-region: no-drag;
     }
     #right-icon {
       display: flex;
       -webkit-app-region: no-drag;
-      background-color: #F2F2F2;
       height: 30px;
       line-height: 30px;
       div {
-        flex: 1;
-        color: #424242;
-        padding: 0 5px;
+        padding: 0 10px;
         transition: background-color 0.4s;
         &:hover {
           cursor: pointer;
@@ -75,9 +72,6 @@ export default {
         }
       }
     }
-    
-    
-
   }
 
 </style>
