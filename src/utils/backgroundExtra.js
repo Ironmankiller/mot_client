@@ -11,10 +11,7 @@ import path from "path";
 import pkg from "../../package.json";
 
 
-// 处理主进程和渲染进程之间的通信问题
-ipcMain.handle("getDataPath", (event) => {
-    return app.getPath("userData");
-});
+
 
 
 // 处理小图标功能

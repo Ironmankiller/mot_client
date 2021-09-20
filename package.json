@@ -17,6 +17,7 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.6.5",
+    "element-ui": "^2.15.6",
     "fs-extra": "^9.0.1",
     "lodash-id": "^0.14.1",
     "lowdb": "^1.0.0",
@@ -43,6 +44,8 @@
     "eslint-plugin-vue": "^6.2.2",
     "prettier": "^2.2.1",
     "spectron": "15.0.0",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
     "vue-cli-plugin-electron-builder": "~2.1.1",
     "vue-template-compiler": "^2.6.11"
   },

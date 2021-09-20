@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, ipcMain } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import { createTray } from "@/utils/backgroundExtra";
 // import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
@@ -118,3 +118,28 @@ if (isDevelopment) {
 function setPosition() {
   win.setPosition(60, 60);
 }
+
+
+// 处理主进程和渲染进程之间的通信问题
+ipcMain.handle("getDataPath", (event) => {
+  return app.getPath("userData");
+});
+
+// 1. 窗口 最小化
+ipcMain.on('window-min',function(){ // 收到渲染进程的窗口最小化操作的通知，并调用窗口最小化函数，执行该操作
+  win.minimize();
+})
+
+// 2. 窗口 最大化、恢复
+ipcMain.on('window-max',function () {
+  if(win.isMaximized()){ // 为true表示窗口已最大化
+      win.restore();// 将窗口恢复为之前的状态.
+  }else{
+      win.maximize();
+  }
+})
+
+// 3. 关闭窗口
+ipcMain.on('window-close',function (){
+  win.close();
+})

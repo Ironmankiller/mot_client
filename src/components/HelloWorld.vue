@@ -20,11 +20,6 @@ export default {
   created() {
     const ip = DB.get("serverIp");
     console.log("Render: "+ip);
-    // ipcRenderer.invoke("getDataPath").then((storePath) => {
-    //   DB.initDB(storePath);
-    //   const ip = DB.get("serverIp");
-    //   console.log(ip);
-    // })
   },
 };
 </script>

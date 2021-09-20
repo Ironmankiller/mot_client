@@ -1,0 +1,37 @@
+{
+  "id": "2824709",
+  "name": "HMI",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "941656",
+      "name": "最小化",
+      "font_class": "zuixiaohua",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "6160677",
+      "name": "最大化",
+      "font_class": "zuidahua",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "14478390",
+      "name": "关  闭",
+      "font_class": "guanbi",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "8242614",
+      "name": "在途跟踪",
+      "font_class": "genzong",
+      "unicode": "e681",
+      "unicode_decimal": 59009
+    }
+  ]
+}
