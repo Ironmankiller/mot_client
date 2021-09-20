@@ -40,11 +40,15 @@ export default {
 </script>
 <style lang="scss">
 .header {
+    z-index: 99;
     -webkit-app-region: drag;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
+    top: 0;
     height: 30px;
+    width: 100%;
     padding: 0px 0px 0px 10px;
     box-sizing: border-box;
     font-size: 15px;
