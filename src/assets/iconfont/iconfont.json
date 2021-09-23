@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2733963",
+      "name": "结束",
+      "font_class": "jieshu",
+      "unicode": "e6ed",
+      "unicode_decimal": 59117
+    },
+    {
+      "icon_id": "2733965",
+      "name": "开始",
+      "font_class": "kaishi",
+      "unicode": "e6ec",
+      "unicode_decimal": 59116
+    },
+    {
       "icon_id": "15342999",
       "name": "断开",
       "font_class": "duankai",

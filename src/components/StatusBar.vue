@@ -2,10 +2,10 @@
   <el-row class="status-bar">
     <el-col :span="12">
       <div class="status">
-      <div :class="[connectedClass, 'iconfont']">
-        {{ connectedText }}
+        <div :class="[connectedClass, 'iconfont']">
+          {{ connectedText }}
+        </div>
       </div>
-    </div>
     </el-col>
     <el-col :span="12">
       <div class="server-input">
@@ -100,21 +100,20 @@ export default {
   padding: 0px 20px;
   .status {
     width: 40%;
-    display: flex;
-    align-items: center;
+
 
     .icon-duankai {
-      font-size: 35px;
+      font-size: 28px;
       color: red;
     }
 
     .icon-lianjie {
-      font-size: 35px;
+      font-size: 28px;
       color: green;
     }
 
     .icon-lianjiezhong {
-      font-size: 35px;
+      font-size: 28px;
       color: orange;
     }
   }

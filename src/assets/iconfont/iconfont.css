@@ -1,9 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2824709 */
-  src: url('iconfont.woff2?t=1632214129575') format('woff2'),
-       url('iconfont.woff?t=1632214129575') format('woff'),
-       url('iconfont.ttf?t=1632214129575') format('truetype'),
-       url('iconfont.svg?t=1632214129575#iconfont') format('svg');
+  src: url('iconfont.woff2?t=1632364301421') format('woff2'),
+       url('iconfont.woff?t=1632364301421') format('woff'),
+       url('iconfont.ttf?t=1632364301421') format('truetype'),
+       url('iconfont.svg?t=1632364301421#iconfont') format('svg');
 }
 
 .iconfont {
@@ -12,6 +12,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jieshu:before {
+  content: "\e6ed";
+}
+
+.icon-kaishi:before {
+  content: "\e6ec";
 }
 
 .icon-duankai:before {
