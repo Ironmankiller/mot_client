@@ -8,13 +8,13 @@
         <el-container>
           <el-container>
             <el-header>
-              <status-bar/>
+              <connection-bar/>
             </el-header>
             <el-main>
               <video-plane/>
             </el-main>
           </el-container>
-          <el-aside width="400px">
+          <el-aside width="450px">
             <control-bar/>
           </el-aside>
         </el-container>
@@ -29,7 +29,7 @@
 <script>
 // @ is an alias to /src
 import MyHeader from "@/components/MyHeader.vue"
-import StatusBar from '@/components/StatusBar.vue';
+import ConnectionBar from '@/components/ConnectionBar.vue';
 import VideoPlane from '@/components/VideoPlane.vue';
 import ControlBar from '@/components/ControlBar.vue';
 
@@ -38,7 +38,7 @@ export default {
   name: "Home",
   components: {
     "my-header": MyHeader,
-    "status-bar": StatusBar,
+    "connection-bar": ConnectionBar,
     "video-plane": VideoPlane,
     "control-bar": ControlBar,
   },

@@ -1,5 +1,5 @@
 <template>
-  <el-row class="status-bar">
+  <el-row class="connection-bar">
     <el-col :span="12">
       <div class="status">
         <div :class="[connectedClass, 'iconfont']">
@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: 'status-bar',
+  name: 'connection-bar',
   data() {
     return {
       connectedStatus: 0,      // 0未连接 1连接中 2连接成功 3连接断开
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss">
-.status-bar {
+.connection-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;

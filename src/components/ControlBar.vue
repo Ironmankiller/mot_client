@@ -31,12 +31,41 @@
 
     <!-- 结果表格 -->
     <div id="result" class="plane">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        height="350">
+        <el-table-column
 
+          prop="id"
+          label="ID"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          prop="class"
+          label="类别"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          prop="detectionStatus"
+          label="检测状态"
+          width="90">
+        </el-table-column>
+        <el-table-column
+          prop="trackingStatus"
+          label="跟踪状态"
+          width="90">
+        </el-table-column>
+        <el-table-column
+          prop="coordinate"
+          label="坐标"
+          width="140">
+        </el-table-column>
+      </el-table>
     </div>
 
     <!-- 参数选择页面 -->
     <div id="parameter" class="plane">
-
     </div>
 
 
@@ -49,6 +78,19 @@ export default ({
   data() {
     return {
       value: null,
+      tableData: [{
+        id:1,
+        class:"car",
+        coordinate:"[12,45,61,21]",
+        detectionStatus: "丢失",
+        trackingStatus: "跟踪中"
+      },{
+        id:2,
+        class:"bus",
+        coordinate:"[16,564,612,851]",
+        detectionStatus: "检测中",
+        trackingStatus: "遮挡"
+      }],
       models: [{
         value: '1',
         label: '单目标跟踪'
