@@ -40,27 +40,30 @@ export default {
 </script>
 <style lang="scss">
 .header {
-    z-index: 99;
     -webkit-app-region: drag;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: fixed;
     top: 0;
+    z-index: 99;
     height: 30px;
     width: 100%;
     padding: 0px 0px 0px 10px;
     box-sizing: border-box;
-    font-size: 15px;
     background-color: #F2F2F2;
     box-shadow: 0px 5px 5px -5px rgba(0,0,0,.5);
-    div {
+    
+    .iconfont {
       color: #424242;
     }
 
     #left-icon {
       font-size: 26px;
       -webkit-app-region: no-drag;
+    }
+    #center-text {
+      font-size: 15px;
     }
     #right-icon {
       display: flex;

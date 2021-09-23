@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "15342999",
+      "name": "断开",
+      "font_class": "duankai",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "18610491",
+      "name": "连接",
+      "font_class": "lianjie",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "13137541",
+      "name": "连接中",
+      "font_class": "lianjiezhong",
+      "unicode": "e729",
+      "unicode_decimal": 59177
+    },
+    {
       "icon_id": "941656",
       "name": "最小化",
       "font_class": "zuixiaohua",

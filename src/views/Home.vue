@@ -1,90 +1,76 @@
 <template>
-  <div id="home">
+  <div class="home">
     <el-container>
-
-      <el-header height="30px" style="padding: 0px;">
+      <el-header height="30px">
         <my-header/>
       </el-header>
-      <el-main style="padding: 0px;">
-        <el-row>
-          <el-col :span="2" class="el-col-light grid-content"></el-col>
-          <el-col :span="20" class="el-col-dark grid-content"></el-col>
-          <el-col :span="2" class="el-col-light grid-content"></el-col>
-        </el-row>
+      <el-main>
+        <el-container>
+          <el-container>
+            <el-header>
+              <status-bar/>
+            </el-header>
+            <el-main>
+              <video-plane/>
+            </el-main>
+          </el-container>
+          <el-aside width="400px">
+            <control-bar/>
+          </el-aside>
+        </el-container>
       </el-main>
-      <el-footer height="25px">
+      <el-footer height="20px">
         Copyright © 2021 hust
       </el-footer>
     </el-container>
-
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import MyHeader from "@/components/MyHeader.vue"
+import StatusBar from '@/components/StatusBar.vue';
+import VideoPlane from '@/components/VideoPlane.vue';
+import ControlBar from '@/components/ControlBar.vue';
 
 
 export default {
   name: "Home",
   components: {
     "my-header": MyHeader,
+    "status-bar": StatusBar,
+    "video-plane": VideoPlane,
+    "control-bar": ControlBar,
   },
 };
 </script>
 
 <style lang="scss">
-#home {
+.home {
   height: 100%;
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
-}
-.el-container {
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content:space-between;
-}
 
-.el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
-    height: 100%;
-    overflow: hidden;
-    
-}
-
-.el-footer{
-  line-height: 30px;
-  background-color: #e4e7eb;
-  color: #333;
-  text-align: right;
-  width: 100%;
-  align-items: center;
-  font-size: 12px;
-}
-
-
-.el-row {
-  line-height: 60px;
-}
-.el-col {
-  border-radius: 3px;
-}
-.el-col-light {
-  background-color: slategrey;
-}
-.el-col-dark {
-  background-color: steelblue;
-}
-
-.grid-content {
-    border-radius: 4px;
-    min-height: 36px;
+  .el-container {
+    width: 100%;
+    min-height: 100%;
   }
+  .el-header {
+    padding: 0px; 
+
+  }
+
+  .el-footer{
+    line-height: 25px;
+    background-color: #e4e7eb;
+    color: #333;
+    text-align: right;
+    font-size: 12px;
+  }
+}
+
+
+
 </style>
