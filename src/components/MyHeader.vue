@@ -23,7 +23,6 @@ export default {
   }, 
   methods: {
      minimizeWin(){
-       console.log(123)
        ipcRenderer.send('window-min') // 通知主进程我要进行窗口最小化操作
     },
     maximizeWin(){

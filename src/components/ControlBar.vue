@@ -66,6 +66,7 @@
 
     <!-- 参数选择页面 -->
     <div id="parameter" class="plane">
+      其他控制参数的选择（待开发）
     </div>
 
 
@@ -86,6 +87,36 @@ export default ({
         trackingStatus: "跟踪中"
       },{
         id:2,
+        class:"bus",
+        coordinate:"[16,564,612,851]",
+        detectionStatus: "检测中",
+        trackingStatus: "遮挡"
+      },{
+        id:3,
+        class:"bus",
+        coordinate:"[16,564,612,851]",
+        detectionStatus: "检测中",
+        trackingStatus: "遮挡"
+      },{
+        id:4,
+        class:"bus",
+        coordinate:"[16,564,612,851]",
+        detectionStatus: "检测中",
+        trackingStatus: "遮挡"
+      },{
+        id:5,
+        class:"bus",
+        coordinate:"[16,564,612,851]",
+        detectionStatus: "检测中",
+        trackingStatus: "遮挡"
+      },{
+        id:6,
+        class:"bus",
+        coordinate:"[16,564,612,851]",
+        detectionStatus: "检测中",
+        trackingStatus: "遮挡"
+      },{
+        id:7,
         class:"bus",
         coordinate:"[16,564,612,851]",
         detectionStatus: "检测中",

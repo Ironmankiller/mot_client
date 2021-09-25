@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home scrollbar scrollbar-x">
     <el-container>
       <el-header height="30px">
         <my-header/>
@@ -52,10 +52,14 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
+  
 
   .el-container {
     width: 100%;
     min-height: 100%;
+    &:hover::-webkit-scrollbar-thumb {
+    display: block;
+    }
   }
   .el-header {
     padding: 0px; 

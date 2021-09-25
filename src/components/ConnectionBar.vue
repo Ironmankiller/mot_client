@@ -16,12 +16,22 @@
           placeholder="请输入ipaddress:port"
           @select="handleSelect"
           clearable
+          :disabled= "connectedStatus!=0"
         >
           <el-button 
+            v-if="connectedStatus == 0"
             class="connect-btn" 
             slot="append" 
             icon="el-icon-circle-check"
-            @click="connectedStatus = (connectedStatus+1)%4"
+            @click="connect()"
+            ></el-button>
+
+          <el-button 
+            v-if="connectedStatus != 0"
+            class="disconnect-btn" 
+            slot="append" 
+            icon="el-icon-circle-close"
+            @click="disconnect()"
             ></el-button>
         </el-autocomplete>
       </div>
@@ -30,40 +40,77 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'connection-bar',
   data() {
     return {
-      connectedStatus: 0,      // 0未连接 1连接中 2连接成功 3连接断开
       connectedClass: 'icon-duankai',
       connectedText: '未连接',
       inputAddr: '',
-      recordlist: []
+      recordlist: [],
+      ws: '',
     };
   },
   methods: {
-    querySearch(queryString, cb) {
+    querySearch(queryString, cb) {              // 获取连接历史记录列表
       var recordlist = this.recordlist;
       var result = queryString ? recordlist.filter(this.createFilter(queryString)) : recordlist;
       // 调用callback返回建议列表的数据
       cb(result);
     }, 
-    createFilter(queryString) {
+    createFilter(queryString) {                // 根据输入对历史记录列表过滤
       return (recordlist) => {
-        console.log(recordlist);
         return (recordlist.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
-    handleSelect(item) {
+    handleSelect(item) {                        // 选择后将所选的内容填入文本框
       this.inputAddr = item.value;
     },
-    loadAll() {
+    loadAll() {                                  // 在此进行获取历史记录的异步操作
       return [
         // 进行db操作
-        {"value":"192.168.31.219:5000"},
+        {"value":"115.156.129.230:9527"},
         {"value":"127.0.0.1:8080"},
       ];
-    }
+    },
+
+    connect() {
+      var pattIp=/^(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|[1-9])\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|[0-9])\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|[0-9])\.(1\d{2}|2[0-4]\d|25[0-5]|[1-9]\d|[0-9]):(6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5]|[1-5]\d{4}|[1-9]\d{3}|[1-9]\d{2}|[1-9]\d|[0-9])$/;
+      if (pattIp.test(this.inputAddr) == 0) {
+        this.$message.error('输入格式错误');
+        this.inputAddr = '';
+        return;
+      }
+      this.$store.commit('connecting');
+      var wsPath = 'ws://'+this.inputAddr;
+      this.ws = new WebSocket(wsPath);
+      this.ws.onopen = this.open;
+      this.ws.onerror = this.error;
+      this.ws.onclose = this.close;
+    },
+    open() {
+      this.$store.commit('connected');
+      console.log('webSocket opened');
+    },
+    error() {
+      this.$store.commit('disconnected');
+      console.log("error");
+    },
+    close() {
+      this.$store.commit('disconnected');
+      console.log("disconnected");
+    },
+    disconnect() {
+      console.log("disconnected");
+      this.ws.close();
+    },
+  },
+  
+  computed: {
+    ...mapState({
+      connectedStatus: 'connectedStatus'
+    }),
   },
   mounted() {
     this.recordlist = this.loadAll();
@@ -98,22 +145,19 @@ export default {
   box-shadow: 0px 5px 5px -5px rgba(0,0,0,.5);
   min-height: 60px;
   padding: 0px 20px;
+
   .status {
     width: 40%;
-
-
+    .iconfont {
+      font-size: 24px;
+    }
     .icon-duankai {
-      font-size: 28px;
       color: red;
     }
-
     .icon-lianjie {
-      font-size: 28px;
       color: green;
     }
-
     .icon-lianjiezhong {
-      font-size: 28px;
       color: orange;
     }
   }
@@ -125,6 +169,12 @@ export default {
         font-size: 24px;
         &:hover {
           color: green;
+        }
+      }
+      .disconnect-btn {
+        font-size: 24px;
+        &:hover {
+          color: red;
         }
       }
     }
