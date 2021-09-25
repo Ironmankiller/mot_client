@@ -41,6 +41,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import bus from '../assets/eventBus'
 export default {
   name: 'connection-bar',
   data() {
@@ -71,7 +72,8 @@ export default {
       return [
         // 进行db操作
         {"value":"115.156.129.230:9527"},
-        {"value":"127.0.0.1:8080"},
+        {"value":"192.168.2.2:8124"},
+        {"value":"115.156.130.106:8124"},
       ];
     },
 
@@ -86,8 +88,12 @@ export default {
       var wsPath = 'ws://'+this.inputAddr;
       this.ws = new WebSocket(wsPath);
       this.ws.onopen = this.open;
+      this.ws.onmessage = this.getMessage;
       this.ws.onerror = this.error;
       this.ws.onclose = this.close;
+    },
+    getMessage(msg) {
+      bus.$emit('getFrame', msg.data);
     },
     open() {
       this.$store.commit('connected');
@@ -102,7 +108,6 @@ export default {
       console.log("disconnected");
     },
     disconnect() {
-      console.log("disconnected");
       this.ws.close();
     },
   },
