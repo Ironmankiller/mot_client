@@ -34,7 +34,7 @@
       <el-table
         :data="tableData"
         style="width: 100%"
-        height="350">
+        height="400">
         <el-table-column
 
           prop="id"

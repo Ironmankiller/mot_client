@@ -63,6 +63,12 @@ async function createWindow() {
     // Load the index.html when not in development
     win.loadURL("app://./index.html");
   }
+
+
+  // 窗口大小改变
+  win.on('resized', (e) => {
+    win.webContents.send('resizeEvent')
+  })
 }
 
 // Quit when all windows are closed.
@@ -140,6 +146,7 @@ ipcMain.on('window-max',function () {
   }else{
       win.maximize();
   }
+  win.webContents.send('resizeEvent')
 })
 
 // 3. 关闭窗口
