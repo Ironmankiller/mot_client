@@ -5,7 +5,7 @@ module.exports = {
     electronBuilder: {
       builderOptions: {
         appId: "目标检测与跟踪上位机",
-        productName: "目标检测与跟踪上位机",
+        productName: "com.hustaia.spy.motclient",
         copyright: "Copyright © 2021 hust",
         // directories: {
         //   output: "./dist", //输出文件路径

@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div :class="['header', focused?'window-focused':'window-blured']">
     <div id="left-icon" class="iconfont icon-genzong" @click="iconBoom"></div>
     <div id="center-text">{{ appName }}</div>
     <div id="right-icon">
@@ -18,7 +18,8 @@ export default {
   name: 'my-header',
   data() {
       return {
-          appName: "HMI for Object Detection and Tracking"
+          appName: "HMI for Object Detection and Tracking",
+          focused: true
       };
   }, 
   methods: {
@@ -34,10 +35,28 @@ export default {
     iconBoom(event) {
       CursorSpecialEffects.handleMouseDown(event);
     },
+  },
+  mounted() {
+    ipcRenderer.on('windowFocusEvent', ()=> {
+      this.focused = true;
+    });
+    ipcRenderer.on('windowBlurEvent', ()=> {
+      this.focused = false;
+    });
   }
 }
 </script>
 <style lang="scss">
+.window-focused {
+  background-color: #F2F2F2;
+  color: #424242;
+}
+
+.window-blured {
+  background-color: #F8F8F8;
+  color: #828282;
+}
+
 .header {
     -webkit-app-region: drag;
     display: flex;
@@ -50,13 +69,9 @@ export default {
     width: 100%;
     padding: 0px 0px 0px 10px;
     box-sizing: border-box;
-    background-color: #F2F2F2;
     box-shadow: 0px 5px 5px -5px rgba(0,0,0,.5);
-    
-    .iconfont {
-      color: #424242;
-    }
 
+    
     #left-icon {
       font-size: 26px;
       -webkit-app-region: no-drag;

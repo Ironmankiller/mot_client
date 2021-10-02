@@ -3,6 +3,8 @@
 import { app, protocol, BrowserWindow, ipcMain, Menu, MenuItem, globalShortcut } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import { createTray } from "@/utils/backgroundExtra";
+import config from '../vue.config'
+import updateChecker from '@/utils/updateChecker'
 // import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -71,6 +73,15 @@ async function createWindow() {
   })
 }
 
+app.on('browser-window-blur', () => {
+  win.webContents.send('windowBlurEvent')
+})
+
+app.on('browser-window-focus', () => {
+  win.webContents.send('windowFocusEvent')
+})
+
+
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
   // On macOS it is common for applications and their menu bar
@@ -106,6 +117,11 @@ function initApplication() {
   createWindow();
 
   createTray(setPosition);
+  updateChecker();
+}
+
+if (process.platform === 'win32') {
+  app.setAppUserModelId(config.pluginOptions.electronBuilder.builderOptions.appId);
 }
 
 // Exit cleanly on request from parent process in development mode.

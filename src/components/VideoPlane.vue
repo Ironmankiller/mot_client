@@ -30,10 +30,13 @@ export default ({
     resizeCanvas() {
       var canvas = document.getElementById('video-canvas');
       var father = document.getElementsByClassName('video-plane');
-      canvas.setAttribute('width', window.getComputedStyle(father[0]).width);
+
+      var width = window.getComputedStyle(father[0]).width
+      canvas.setAttribute('width', width);
+
       var height = (window.getComputedStyle(father[0]).width.split('p')[0]);    // 行内对象的高度比父容器小4px，手动将4px补偿
-      height *= 1;  // 字符串转数字
-      height /= 1.5;  // height是width的2/3倍
+      height *= 9;  // 字符串转数字
+      height /= 16;  // height是width的2/3倍
       height = height.toString() + 'px';
       canvas.setAttribute('height', height);
 
