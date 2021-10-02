@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7037713",
+      "name": "画质",
+      "font_class": "huazhi",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
+    },
+    {
+      "icon_id": "407232",
+      "name": "比例",
+      "font_class": "bili",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "1467292",
+      "name": "16-9",
+      "font_class": "p16-9",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "12149059",
+      "name": "full-screen",
+      "font_class": "FullScreen",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "24749784",
+      "name": "4-3",
+      "font_class": "p4-3",
+      "unicode": "e72a",
+      "unicode_decimal": 59178
+    },
+    {
       "icon_id": "2733963",
       "name": "结束",
       "font_class": "jieshu",

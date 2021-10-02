@@ -19,7 +19,6 @@ const checkVersion = async () => {
     if (res.status === 200) {
       const latest = res.data.name // 获取版本号
       const result = compareVersion2Update(version, latest) // 比对版本号，如果本地版本低于远端则更新
-      console.log(result)
       if (result) {
         dialog.showMessageBox({
           type: 'info',

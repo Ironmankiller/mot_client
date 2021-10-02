@@ -67,7 +67,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {},
+    "rules": {
+      "prettier/prettier": "off"
+    },
     "overrides": [
       {
         "files": [

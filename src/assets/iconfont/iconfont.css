@@ -1,9 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2824709 */
-  src: url('iconfont.woff2?t=1632364301421') format('woff2'),
-       url('iconfont.woff?t=1632364301421') format('woff'),
-       url('iconfont.ttf?t=1632364301421') format('truetype'),
-       url('iconfont.svg?t=1632364301421#iconfont') format('svg');
+  src: url('iconfont.woff2?t=1633157442137') format('woff2'),
+       url('iconfont.woff?t=1633157442137') format('woff'),
+       url('iconfont.ttf?t=1633157442137') format('truetype'),
+       url('iconfont.svg?t=1633157442137#iconfont') format('svg');
 }
 
 .iconfont {
@@ -12,6 +12,26 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-huazhi:before {
+  content: "\e6a1";
+}
+
+.icon-bili:before {
+  content: "\e64c";
+}
+
+.icon-p16-9:before {
+  content: "\e67b";
+}
+
+.icon-FullScreen:before {
+  content: "\e601";
+}
+
+.icon-p4-3:before {
+  content: "\e72a";
 }
 
 .icon-jieshu:before {
