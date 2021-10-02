@@ -175,8 +175,6 @@ export default ({
   }
 }
 
-#parameter {
 
-}
 
 </style>
