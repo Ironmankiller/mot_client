@@ -163,9 +163,11 @@ export default ({
     }
   }
 }
+
 .video-control {
   visibility: hidden;
   height: 40px;
+
   .iconfont {
     font-size: 30px;
   }

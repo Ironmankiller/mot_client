@@ -42,12 +42,14 @@
 <script>
 import { mapState } from 'vuex'
 import bus from '../assets/eventBus'
+import DB from '@/utils/db'
 export default {
   name: 'connection-bar',
   data() {
     return {
-      connectedClass: 'icon-duankai',
-      connectedText: '未连接',
+      connectedClass: '',
+      connectedText: '',
+      connectedStatus: '',     // 0未连接，1已连接，2连接中
       inputAddr: '',
       recordlist: [],
       ws: '',
@@ -57,8 +59,8 @@ export default {
     querySearch(queryString, cb) {              // 获取连接历史记录列表
       var recordlist = this.recordlist;
       var result = queryString ? recordlist.filter(this.createFilter(queryString)) : recordlist;
-      // 调用callback返回建议列表的数据
-      cb(result);
+      // 调用callback返回建议列表的数据，取出前3个显示
+      cb(result.slice(0, 3));
     }, 
     createFilter(queryString) {                // 根据输入对历史记录列表过滤
       return (recordlist) => {
@@ -69,12 +71,9 @@ export default {
       this.inputAddr = item.value;
     },
     loadAll() {                                  // 在此进行获取历史记录的异步操作
-      return [
-        // 进行db操作
-        {"value":"115.156.129.230:9527"},
-        {"value":"192.168.2.2:8124"},
-        {"value":"115.156.130.106:8124"},
-      ];
+      // 进行db操作
+      const ip_list = DB.get("serverIp");
+      return ip_list;
     },
 
     connect() {
@@ -84,7 +83,7 @@ export default {
         this.inputAddr = '';
         return;
       }
-      this.$store.commit('connecting');
+      this.connectedStatus = 2;
       var wsPath = 'ws://'+this.inputAddr;
       this.ws = new WebSocket(wsPath);
       this.ws.onopen = this.open;
@@ -97,15 +96,20 @@ export default {
     },
     open() {
       this.$store.commit('connected');
+      this.connectedStatus = 1;
+      DB.insertUnique("serverIp", {"value" : this.inputAddr});
+      this.recordlist = this.loadAll();
       console.log('webSocket opened');
     },
     error() {
-      this.$store.commit('disconnected');
+      this.$store.commit('disConnected');
+      this.connectedStatus = 0
       console.log("error");
     },
     close() {
-      this.$store.commit('disconnected');
-      console.log("disconnected");
+      this.$store.commit('disConnected');
+      this.connectedStatus = 0
+      console.log("disConnected");
     },
     disconnect() {
       this.ws.close();
@@ -114,11 +118,12 @@ export default {
   
   computed: {
     ...mapState({
-      connectedStatus: 'connectedStatus'
+      connectedFlag: 'connectedFlag'
     }),
   },
   mounted() {
     this.recordlist = this.loadAll();
+    this.connectedStatus = this.connectedFlag;
   },
   watch: {
     connectedStatus(newStatus) {
@@ -126,11 +131,11 @@ export default {
         this.connectedClass = 'icon-duankai';
         this.connectedText = '未连接';
       } else if (newStatus == 1) {
-        this.connectedClass = 'icon-lianjiezhong';
-        this.connectedText = '连接中';
-      } else if (newStatus == 2) {
         this.connectedClass = 'icon-lianjie';
         this.connectedText = '已连接';
+      } else if (newStatus == 2) {
+        this.connectedClass = 'icon-lianjiezhong';
+        this.connectedText = '连接中';
       } else {
         this.connectedClass = 'icon-duankai';
         this.connectedText = '未连接';

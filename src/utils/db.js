@@ -23,9 +23,8 @@ const db = Datastore(adapter);
 db._.mixin(LodashId);
 
 db.defaults({
-    serverIp: "192.168.31.219",
-    serverPort: 5000
-}).write();
+    serverIp: [{"value":"127.0.0.1:9527"}]
+}).write().id;
 
 const DB = {
     has(key) {
@@ -38,6 +37,7 @@ const DB = {
         return db
         .read()
         .get(key)
+        .reverse()
         .value();
     },
     set(key, value) {
@@ -47,6 +47,21 @@ const DB = {
         .write();
     },
     insert(key, value) {
+        return db
+        .read()
+        .get(key)
+        .insert(value)
+        .write();
+    },
+    insertUnique(key, value) {
+        var hasValue = db
+        .read()
+        .get(key)
+        .find(value)
+        .value();
+        if (hasValue != undefined) {        // 如果存在就删除
+            this.removeById(key, hasValue.id);
+        }
         return db
         .read()
         .get(key)

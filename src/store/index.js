@@ -5,18 +5,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    connectedStatus: 0
+    connectedFlag: 0
   },
   mutations: {
-    disconnected (state) {
-      state.connectedStatus = 0;
-    },
-    connecting (state) {
-      state.connectedStatus = 1;
+    disConnected (state) {
+      state.isConnected = 0;
     },
     connected (state) {
-      state.connectedStatus = 2;
+      state.isConnected = 1;
     },
+    
   },
   actions: {
   },
