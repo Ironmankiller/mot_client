@@ -2,7 +2,7 @@
   <div class="control-bar">
     <!-- 模型选择与开始结束 -->
     <div id="model" class="plane">
-      <el-select class="model-selector" v-model="value" placeholder="请选择模型">
+      <el-select class="model-selector" v-model="modelName" placeholder="请选择模型" :disabled="!connectedFlag || startFlag">
         <el-option
           v-for="item in models"
           :key="item.value"
@@ -10,21 +10,45 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <el-row class="start-stop">
+      <el-row class="mode-select">
         <el-col :span="11">
           <div>
-            <el-button type="text" class="iconfont icon-kaishi"></el-button>
+            <el-button 
+              type="text" 
+              :class="[{'icon-start': connectedFlag},'iconfont', 'icon-kaishi']" 
+              @click="start()" 
+              v-if="startFlag!=1" 
+              :disabled="!connectedFlag || modelName==null">
+            </el-button>
+            <el-button 
+              type="text" 
+              :class="[{'icon-pause': connectedFlag},'iconfont', 'icon-zanting']" 
+              @click="pause()" 
+              v-if="startFlag == 1" 
+              :disabled="!connectedFlag">
+            </el-button>
+            <el-button 
+              type="text" 
+              :class="[{'icon-stop': connectedFlag},'iconfont', 'icon-jieshu']" 
+              @click="stop()" 
+              v-if="startFlag" 
+              :disabled="!connectedFlag">
+            </el-button>
           </div>
-          开始
+          {{ startFlag ? startFlag == 1 ? "暂停 / 结束" : "开始 / 结束" : "开始" }}
         </el-col>
         <el-col :span="2">
           <el-divider direction="vertical"></el-divider>
         </el-col>
         <el-col :span="11">
           <div>
-            <el-button type="text" class="iconfont icon-jieshu"></el-button>
+            <el-radio-group v-model="mode" size="small" style="margin-top:12px" :disabled="!connectedFlag || startFlag">
+              <el-radio-button label="实时模式"></el-radio-button>
+              <el-radio-button label="回放模式"></el-radio-button>
+            </el-radio-group>
+            <!-- <el-button type="text" class="iconfont icon-jieshu" :disabled="!connectedFlag||!startFlag"></el-button> -->
           </div>
-          结束
+
         </el-col>
       </el-row>
     </div>
@@ -74,11 +98,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default ({
   name: "control-bar",
   data() {
     return {
-      value: null,
+      mode: "实时模式",
+      modelName: null,
       tableData: [{
         id:1,
         class:"car",
@@ -133,6 +159,42 @@ export default ({
         label: '多目标检测跟踪'
       }]
     };
+  },
+  methods : {
+    start() {
+      // 加载模型，并开始输出
+      this.$store.commit('start');
+    },
+    pause() {
+      // 暂停输出
+      this.$store.commit('pause');
+    },
+    stop() {
+      // 保存文件并销毁模型
+      this.$store.commit('stop');
+    }
+  },
+  computed: {
+    ...mapState({
+      connectedFlag: 'connectedFlag',
+      startFlag: 'startFlag'
+    }),
+  },
+  mounted() {
+  },
+  watch: {
+    connectedFlag(newState) {
+      if (newState == 0) {
+        this.$store.commit('stop');
+      }
+    },
+    startFlag(newState) {
+      if (newState == 0) {
+        this.startText = "开始";
+      } else {
+        this.startText = "结束";
+      }
+    }
   }
 })
 </script>
@@ -150,10 +212,12 @@ export default ({
   .model-selector {
     width: 100%;
   }
+  
 
-  .start-stop {
+  .mode-select {
     margin-top: 12px;
     text-align: center;
+
     .el-divider {
       font-size: 60px;
     }
@@ -165,11 +229,15 @@ export default ({
       font-size: 40px;
 
     }
-    .icon-jieshu {
+    
+    .icon-stop {
       color: indianred;
     }
+    .icon-pause {
+      color: orange;
+    }
 
-    .icon-kaishi {
+    .icon-start {
       color: green;
     }
   }

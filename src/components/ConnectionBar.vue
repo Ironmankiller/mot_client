@@ -27,7 +27,7 @@
             ></el-button>
 
           <el-button 
-            v-if="connectedStatus != 0"
+            v-else
             class="disconnect-btn" 
             slot="append" 
             icon="el-icon-circle-close"
@@ -123,7 +123,7 @@ export default {
   },
   mounted() {
     this.recordlist = this.loadAll();
-    this.connectedStatus = this.connectedFlag;
+    this.connectedStatus = this.connectedFlag;   // 用全局连接状态初始化局部状态
   },
   watch: {
     connectedStatus(newStatus) {
