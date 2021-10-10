@@ -2,7 +2,12 @@
   <div class="control-bar">
     <!-- 模型选择与开始结束 -->
     <div id="model" class="plane">
-      <el-select class="model-selector" v-model="modelName" placeholder="请选择模型" :disabled="!connectedFlag || startFlag">
+      <el-select 
+        class="model-selector" 
+        v-model="modelName" 
+        placeholder="请选择模型" 
+        :disabled="!isConnected() || !isStopped()"
+      >
         <el-option
           v-for="item in models"
           :key="item.value"
@@ -11,42 +16,47 @@
         </el-option>
       </el-select>
       <el-row class="mode-select">
-        <el-col :span="11">
+        <el-col :span="7">
           <div>
             <el-button 
               type="text" 
-              :class="[{'icon-start': connectedFlag},'iconfont', 'icon-kaishi']" 
+              :class="[{'icon-start': isConnected()},'iconfont', 'icon-kaishi']" 
               @click="start()" 
-              v-if="startFlag!=1" 
-              :disabled="!connectedFlag || modelName==null">
+              v-if="!isStarted()" 
+              :disabled="!isConnected()">
             </el-button>
             <el-button 
               type="text" 
-              :class="[{'icon-pause': connectedFlag},'iconfont', 'icon-zanting']" 
+              :class="[{'icon-pause': isConnected()},'iconfont', 'icon-zanting']" 
               @click="pause()" 
-              v-if="startFlag == 1" 
-              :disabled="!connectedFlag">
+              v-if="isStarted()" 
+              :disabled="!isConnected()">
             </el-button>
             <el-button 
               type="text" 
-              :class="[{'icon-stop': connectedFlag},'iconfont', 'icon-jieshu']" 
+              :class="[{'icon-stop': isConnected()},'iconfont', 'icon-jieshu']" 
               @click="stop()" 
-              v-if="startFlag" 
-              :disabled="!connectedFlag">
+              v-if="!isStopped()" 
+              :disabled="!isConnected()">
             </el-button>
           </div>
-          {{ startFlag ? startFlag == 1 ? "暂停 / 结束" : "开始 / 结束" : "开始" }}
+          {{ !isStopped() ? isStarted() ? "暂停 / 结束" : "开始 / 结束" : "开始" }}
         </el-col>
         <el-col :span="2">
           <el-divider direction="vertical"></el-divider>
         </el-col>
-        <el-col :span="11">
+        <el-col :span="15">
           <div>
-            <el-radio-group v-model="mode" size="small" style="margin-top:12px" :disabled="!connectedFlag || startFlag">
+            <el-radio-group 
+              v-model="mode" 
+              size="small" 
+              style="margin-top:12px" 
+              :disabled="!isConnected() || !isStopped()"
+            >
               <el-radio-button label="实时模式"></el-radio-button>
               <el-radio-button label="回放模式"></el-radio-button>
+              <el-radio-button label="上传模式"></el-radio-button>
             </el-radio-group>
-            <!-- <el-button type="text" class="iconfont icon-jieshu" :disabled="!connectedFlag||!startFlag"></el-button> -->
           </div>
 
         </el-col>
@@ -99,55 +109,58 @@
 
 <script>
 import { mapState } from 'vuex';
+import bus from '@/assets/eventBus'
+
 export default ({
   name: "control-bar",
   data() {
     return {
       mode: "实时模式",
       modelName: null,
-      tableData: [{
-        id:1,
-        class:"car",
-        coordinate:"[12,45,61,21]",
-        detectionStatus: "丢失",
-        trackingStatus: "跟踪中"
-      },{
-        id:2,
-        class:"bus",
-        coordinate:"[16,564,612,851]",
-        detectionStatus: "检测中",
-        trackingStatus: "遮挡"
-      },{
-        id:3,
-        class:"bus",
-        coordinate:"[16,564,612,851]",
-        detectionStatus: "检测中",
-        trackingStatus: "遮挡"
-      },{
-        id:4,
-        class:"bus",
-        coordinate:"[16,564,612,851]",
-        detectionStatus: "检测中",
-        trackingStatus: "遮挡"
-      },{
-        id:5,
-        class:"bus",
-        coordinate:"[16,564,612,851]",
-        detectionStatus: "检测中",
-        trackingStatus: "遮挡"
-      },{
-        id:6,
-        class:"bus",
-        coordinate:"[16,564,612,851]",
-        detectionStatus: "检测中",
-        trackingStatus: "遮挡"
-      },{
-        id:7,
-        class:"bus",
-        coordinate:"[16,564,612,851]",
-        detectionStatus: "检测中",
-        trackingStatus: "遮挡"
-      }],
+      tableData: [],
+      // tableData: [{
+      //   id:1,
+      //   class:"car",
+      //   coordinate:"[12,45,61,21]",
+      //   detectionStatus: "丢失",
+      //   trackingStatus: "跟踪中"
+      // },{
+      //   id:2,
+      //   class:"bus",
+      //   coordinate:"[16,564,612,851]",
+      //   detectionStatus: "检测中",
+      //   trackingStatus: "遮挡"
+      // },{
+      //   id:3,
+      //   class:"bus",
+      //   coordinate:"[16,564,612,851]",
+      //   detectionStatus: "检测中",
+      //   trackingStatus: "遮挡"
+      // },{
+      //   id:4,
+      //   class:"bus",
+      //   coordinate:"[16,564,612,851]",
+      //   detectionStatus: "检测中",
+      //   trackingStatus: "遮挡"
+      // },{
+      //   id:5,
+      //   class:"bus",
+      //   coordinate:"[16,564,612,851]",
+      //   detectionStatus: "检测中",
+      //   trackingStatus: "遮挡"
+      // },{
+      //   id:6,
+      //   class:"bus",
+      //   coordinate:"[16,564,612,851]",
+      //   detectionStatus: "检测中",
+      //   trackingStatus: "遮挡"
+      // },{
+      //   id:7,
+      //   class:"bus",
+      //   coordinate:"[16,564,612,851]",
+      //   detectionStatus: "检测中",
+      //   trackingStatus: "遮挡"
+      // }],
       models: [{
         value: '1',
         label: '单目标跟踪'
@@ -163,6 +176,20 @@ export default ({
   methods : {
     start() {
       // 加载模型，并开始输出
+      if (this.modelName == null) {
+        this.$message.error('请选择模型');
+        return;
+      }
+      switch(this.mode) {
+        case "实时模式":
+          break;
+        case "回放模式":
+          break;
+        case "上传模式":
+          break;
+        default:
+          break;
+      }
       this.$store.commit('start');
     },
     pause() {
@@ -172,7 +199,16 @@ export default ({
     stop() {
       // 保存文件并销毁模型
       this.$store.commit('stop');
-    }
+    },
+    isConnected() {
+      return this.connectedFlag == 1;
+    },
+    isStopped() {
+      return this.startFlag == 0;
+    },
+    isStarted() {
+      return this.startFlag == 1;
+    },
   },
   computed: {
     ...mapState({
@@ -181,6 +217,22 @@ export default ({
     }),
   },
   mounted() {
+    bus.$on('getLabel', (message)=>{
+      var jsonLabel = JSON.parse(message);
+      var exist = false;
+      jsonLabel['coordinate'] = '['+jsonLabel['coordinate'].join(',') +']';
+      this.tableData = this.tableData.map((x) => {
+        if (x['id'] === jsonLabel['id']) {
+          exist = true;
+          return jsonLabel;
+        } else {
+          return x;
+        }
+      })
+      if (!exist) {
+        this.tableData.push(jsonLabel);
+      }
+    });
   },
   watch: {
     connectedFlag(newState) {

@@ -20,7 +20,7 @@
         </el-container>
       </el-main>
       <el-footer height="20px">
-        Copyright © 2021 hust
+        Copyright © 2021 Hust AIA
       </el-footer>
     </el-container>
   </div>

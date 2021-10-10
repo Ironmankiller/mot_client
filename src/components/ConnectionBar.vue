@@ -41,7 +41,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import bus from '../assets/eventBus'
+import bus from '@/assets/eventBus'
 import DB from '@/utils/db'
 export default {
   name: 'connection-bar',
@@ -91,8 +91,11 @@ export default {
       this.ws.onerror = this.error;
       this.ws.onclose = this.close;
     },
-    getMessage(msg) {
-      bus.$emit('getFrame', msg.data);
+    getMessage(msg) {          // 在此处理接受到的数据
+      var jsonData = JSON.parse(msg.data);
+
+      bus.$emit('getLabel', jsonData["label"]);
+      bus.$emit('getFrame', jsonData["data"]);
     },
     open() {
       this.$store.commit('connected');

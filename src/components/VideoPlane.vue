@@ -128,8 +128,8 @@ export default ({
           this.proportion.height = 3;
           break;
         default:
-          this.proportion.width = 4;
-          this.proportion.height = 3;
+          this.proportion.width = 16;
+          this.proportion.height = 9;
           break;
       }
       this.resizeCanvas();
@@ -141,7 +141,6 @@ export default ({
 
     
   },
-
   mounted() {
     this.img = new Image()
     bus.$on('getFrame', (message)=>{
