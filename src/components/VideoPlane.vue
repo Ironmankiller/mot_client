@@ -22,6 +22,7 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="0">16:9</el-dropdown-item>
           <el-dropdown-item command="1">4:3</el-dropdown-item>
+          <el-dropdown-item command="2">原比例</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 
@@ -40,21 +41,36 @@ export default ({
   data() {
     return {
       img: '',
-      proportion: {width: 4, height: 3},
+      proportion: {width: 16, height: 9},
       isFullScreen: false
     };
   },
   methods: {
-    draw(frame){
+    draw(frame, labels_str){
       var canvas = document.getElementById('video-canvas');
       if (!canvas.getContext) return;
       var ctx = canvas.getContext("2d");
-
+      let labels = JSON.parse(labels_str);
       this.img.onload = function() {
         ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+        if (labels.length) {
+          let perW = parseFloat((canvas.offsetWidth / this.width).toFixed(4));
+          let perH = parseFloat((canvas.offsetHeight / this.height).toFixed(4));
+          labels.forEach((element) => {
+            ctx.strokeStyle = '#ff0000' // 框颜色
+            ctx.lineWidth = 2 // 框宽度
+            let [x1, y1, x2, y2] = element['coordinate'];
+            let x = x1 * perH;
+            let y = y1 * perW;
+            let height = (x2 - x1) * perH;
+            let width = (y2 - y1) * perW;
+            ctx.strokeRect(y, x, width, height);
+          });
+        }
       }
       this.img.src = frame;
     },
+
     resizeCanvas() {
       var canvas = document.getElementById('video-canvas');
       var proportion = this.proportion.width / this.proportion.height;
@@ -127,6 +143,10 @@ export default ({
           this.proportion.width = 4;
           this.proportion.height = 3;
           break;
+        case '2':
+          this.proportion.width = this.src.width;
+          this.proportion.height = this.src.height;
+          break;
         default:
           this.proportion.width = 16;
           this.proportion.height = 9;
@@ -144,7 +164,7 @@ export default ({
   mounted() {
     this.img = new Image()
     bus.$on('getFrame', (message)=>{
-      this.draw(message);
+      this.draw(message['data'], message['label']);
     });
     ipcRenderer.on('resizeEvent', ()=> {
       this.resizeCanvas();

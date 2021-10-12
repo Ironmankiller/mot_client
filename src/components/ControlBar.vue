@@ -93,7 +93,7 @@
         <el-table-column
           prop="coordinate"
           label="坐标"
-          width="140">
+          width="160">
         </el-table-column>
       </el-table>
     </div>
@@ -218,20 +218,22 @@ export default ({
   },
   mounted() {
     bus.$on('getLabel', (message)=>{
-      var jsonLabel = JSON.parse(message);
-      var exist = false;
-      jsonLabel['coordinate'] = '['+jsonLabel['coordinate'].join(',') +']';
-      this.tableData = this.tableData.map((x) => {
-        if (x['id'] === jsonLabel['id']) {
-          exist = true;
-          return jsonLabel;
-        } else {
-          return x;
+      let jsonLabels = JSON.parse(message);
+      jsonLabels.forEach(jsonLabel => {
+        let exist = false;
+        jsonLabel['coordinate'] = '['+jsonLabel['coordinate'].join(',') +']';
+        this.tableData = this.tableData.map((x) => {
+          if (x['id'] === jsonLabel['id']) {
+            exist = true;
+            return jsonLabel;
+          } else {
+            return x;
+          }
+        })
+        if (!exist) {
+          this.tableData.push(jsonLabel);
         }
-      })
-      if (!exist) {
-        this.tableData.push(jsonLabel);
-      }
+      });
     });
   },
   watch: {

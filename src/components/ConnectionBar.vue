@@ -95,7 +95,7 @@ export default {
       var jsonData = JSON.parse(msg.data);
 
       bus.$emit('getLabel', jsonData["label"]);
-      bus.$emit('getFrame', jsonData["data"]);
+      bus.$emit('getFrame', jsonData);
     },
     open() {
       this.$store.commit('connected');
