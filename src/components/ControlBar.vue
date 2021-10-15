@@ -78,11 +78,11 @@
         <el-table-column
           prop="class"
           label="类别"
-          width="60">
+          width="70">
         </el-table-column>
         <el-table-column
-          prop="detectionStatus"
-          label="检测状态"
+          prop="confidence"
+          label="置信度"
           width="90">
         </el-table-column>
         <el-table-column
@@ -110,6 +110,7 @@
 <script>
 import { mapState } from 'vuex';
 import bus from '@/assets/eventBus'
+import axios from 'axios'
 
 export default ({
   name: "control-bar",
@@ -182,6 +183,13 @@ export default ({
       }
       switch(this.mode) {
         case "实时模式":
+          axios.get('http://127.0.0.1:5000/start')
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
           break;
         case "回放模式":
           break;

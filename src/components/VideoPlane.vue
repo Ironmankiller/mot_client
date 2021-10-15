@@ -46,27 +46,27 @@ export default ({
     };
   },
   methods: {
-    draw(frame, labels_str){
+    draw(frame, /*labels_str*/){
       var canvas = document.getElementById('video-canvas');
       if (!canvas.getContext) return;
       var ctx = canvas.getContext("2d");
-      let labels = JSON.parse(labels_str);
+      // let labels = JSON.parse(labels_str);
       this.img.onload = function() {
         ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-        if (labels.length) {
-          let perW = parseFloat((canvas.offsetWidth / this.width).toFixed(4));
-          let perH = parseFloat((canvas.offsetHeight / this.height).toFixed(4));
-          labels.forEach((element) => {
-            ctx.strokeStyle = '#ff0000' // 框颜色
-            ctx.lineWidth = 2 // 框宽度
-            let [x1, y1, x2, y2] = element['coordinate'];
-            let x = x1 * perH;
-            let y = y1 * perW;
-            let height = (x2 - x1) * perH;
-            let width = (y2 - y1) * perW;
-            ctx.strokeRect(y, x, width, height);
-          });
-        }
+        // if (labels.length) {
+        //   let perW = parseFloat((canvas.offsetWidth / this.width).toFixed(4));
+        //   let perH = parseFloat((canvas.offsetHeight / this.height).toFixed(4));
+        //   labels.forEach((element) => {
+        //     ctx.strokeStyle = '#ff0000' // 框颜色
+        //     ctx.lineWidth = 2 // 框宽度
+        //     let [x1, y1, x2, y2] = element['coordinate'];
+        //     let x = x1 * perH;
+        //     let y = y1 * perW;
+        //     let height = (x2 - x1) * perH;
+        //     let width = (y2 - y1) * perW;
+        //     ctx.strokeRect(y, x, width, height);
+        //   });
+        // }
       }
       this.img.src = frame;
     },
